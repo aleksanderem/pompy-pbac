@@ -1,0 +1,321 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import { motion } from "motion/react";
+import { Calculator, TrendingDown, Zap, Flame, Thermometer } from "lucide-react";
+import CostRaceChart from "@/components/cost-race-chart";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { AuroraText } from "@/components/ui/aurora-text";
+import { GridPattern } from "@/components/ui/grid-pattern";
+
+// Average annual heating costs per m² for each fuel type (PLN)
+const FUEL_COSTS: Record<string, { label: string; costPerM2: number; icon: typeof Flame }> = {
+  gaz: { label: "Gaz ziemny", costPerM2: 45, icon: Flame },
+  olej: { label: "Olej opałowy", costPerM2: 55, icon: Flame },
+  wegiel: { label: "Węgiel", costPerM2: 40, icon: Flame },
+  elektryczne: { label: "Ogrzewanie elektryczne", costPerM2: 80, icon: Zap },
+};
+
+// Heat pump average cost per m² (COP ~3.5, avg electricity price)
+const HEAT_PUMP_COST_PER_M2 = 18;
+
+// Insulation multiplier (worse insulation = higher costs)
+const INSULATION_MULT: Record<string, { label: string; mult: number }> = {
+  dobra: { label: "Dobra (po termomodernizacji)", mult: 0.85 },
+  srednia: { label: "Średnia", mult: 1.0 },
+  slaba: { label: "Słaba (stary budynek)", mult: 1.25 },
+};
+
+export default function CalculatorSection() {
+  const [area, setArea] = useState("120");
+  const [fuel, setFuel] = useState("gaz");
+  const [insulation, setInsulation] = useState("srednia");
+  const [showResult, setShowResult] = useState(true);
+
+  const result = useMemo(() => {
+    const m2 = parseFloat(area) || 0;
+    if (m2 <= 0) return null;
+
+    const fuelData = FUEL_COSTS[fuel];
+    const insulMult = INSULATION_MULT[insulation]?.mult ?? 1;
+
+    const currentCost = Math.round(m2 * fuelData.costPerM2 * insulMult);
+    const heatPumpCost = Math.round(m2 * HEAT_PUMP_COST_PER_M2 * insulMult);
+    const savings = currentCost - heatPumpCost;
+    const savingsPercent = Math.round((savings / currentCost) * 100);
+
+    return {
+      currentCost,
+      heatPumpCost,
+      savings,
+      savingsPercent,
+      fuelLabel: fuelData.label,
+      savingsIn10Years: savings * 10,
+    };
+  }, [area, fuel, insulation]);
+
+  return (
+    <section id="kalkulator" className="relative py-20 px-4 overflow-hidden">
+      <GridPattern
+        width={40}
+        height={40}
+        strokeDasharray="3 5"
+        className="absolute inset-0 fill-transparent stroke-pbac-navy/[0.08] [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)]"
+      />
+      <div className="relative max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h2 className="font-montserrat text-4xl md:text-5xl font-bold mb-4">
+            Czy opłaca mi się <AuroraText>pompa ciepła</AuroraText>?
+          </h2>
+          <p className="text-white/60 max-w-2xl mx-auto text-lg">
+            Sprawdź, ile możesz zaoszczędzić rocznie po zamianie obecnego
+            ogrzewania na pompę ciepła. Obliczenia oparte na średnich cenach
+            energii w Polsce.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left: inputs */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Card className="bg-white/5 backdrop-blur border-white/10 rounded-2xl">
+              <CardContent className="pt-6 space-y-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="size-10 rounded-xl gradient-icon flex items-center justify-center">
+                    <Calculator className="size-5 text-white" />
+                  </div>
+                  <h3 className="font-montserrat font-bold text-lg">
+                    Parametry Twojego domu
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-white/80">Powierzchnia domu (m²)</Label>
+                  <Input
+                    type="number"
+                    value={area}
+                    onChange={(e) => {
+                      setArea(e.target.value);
+                      setShowResult(false);
+                    }}
+                    placeholder="np. 120"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/40 hover:bg-white/10"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-white/80">Obecne ogrzewanie</Label>
+                  <Select
+                    value={fuel}
+                    onValueChange={(v) => {
+                      setFuel(v);
+                      setShowResult(false);
+                    }}
+                  >
+                    <SelectTrigger className="w-full bg-white/5 border-white/10 text-white hover:bg-white/10">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-neutral-900 border-white/10">
+                      {Object.entries(FUEL_COSTS).map(([key, { label }]) => (
+                        <SelectItem key={key} value={key}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-white/80">Izolacja budynku</Label>
+                  <Select
+                    value={insulation}
+                    onValueChange={(v) => {
+                      setInsulation(v);
+                      setShowResult(false);
+                    }}
+                  >
+                    <SelectTrigger className="w-full bg-white/5 border-white/10 text-white hover:bg-white/10">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-neutral-900 border-white/10">
+                      {Object.entries(INSULATION_MULT).map(([key, { label }]) => (
+                        <SelectItem key={key} value={key}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <button
+                  onClick={() => setShowResult(true)}
+                  className="w-full gradient-button text-white py-3 rounded-xl text-sm font-medium uppercase tracking-wider hover:opacity-90 transition-opacity"
+                >
+                  Oblicz oszczędności
+                </button>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Right: results */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {showResult && result ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+                className="space-y-4"
+              >
+                {/* Savings highlight */}
+                <Card className="bg-white/5 backdrop-blur border-pbac-magenta/30 rounded-2xl overflow-hidden">
+                  <div className="gradient-primary p-6 text-center">
+                    <TrendingDown className="size-8 text-white mx-auto mb-2" />
+                    <p className="text-white/80 text-sm">Roczna oszczędność</p>
+                    <p className="font-montserrat text-4xl font-bold text-white mt-1">
+                      {result.savings.toLocaleString("pl-PL")} zł
+                    </p>
+                    <p className="text-white/70 text-sm mt-1">
+                      to {result.savingsPercent}% mniej niż {result.fuelLabel.toLowerCase()}
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Comparison */}
+                <div className="grid grid-cols-2 gap-4">
+                  <Card className="bg-white/5 border-white/10 rounded-2xl">
+                    <CardContent className="pt-5 text-center">
+                      <p className="text-white/40 text-xs uppercase tracking-wider mb-1">
+                        {result.fuelLabel}
+                      </p>
+                      <p className="font-montserrat text-2xl font-bold text-red-400">
+                        {result.currentCost.toLocaleString("pl-PL")} zł
+                      </p>
+                      <p className="text-white/40 text-xs mt-1">rocznie</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-white/5 border-white/10 rounded-2xl">
+                    <CardContent className="pt-5 text-center">
+                      <p className="text-white/40 text-xs uppercase tracking-wider mb-1">
+                        Pompa ciepła
+                      </p>
+                      <p className="font-montserrat text-2xl font-bold text-green-400">
+                        {result.heatPumpCost.toLocaleString("pl-PL")} zł
+                      </p>
+                      <p className="text-white/40 text-xs mt-1">rocznie</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* 10 year projection */}
+                <Card className="bg-white/5 border-white/10 rounded-2xl">
+                  <CardContent className="pt-5">
+                    <p className="text-white/40 text-xs uppercase tracking-wider mb-2">
+                      Oszczędności w ciągu 10 lat
+                    </p>
+                    <p className="font-montserrat text-3xl font-bold text-white">
+                      {result.savingsIn10Years.toLocaleString("pl-PL")} zł
+                    </p>
+                    <p className="text-white/50 text-sm mt-2">
+                      Przy obecnych cenach energii. Wraz ze wzrostem cen paliw
+                      kopalnych oszczędności będą jeszcze większe.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Button
+                  asChild
+                  className="w-full gradient-button rounded-xl uppercase text-sm tracking-wider h-12 text-white border-0 hover:opacity-90 transition-opacity"
+                >
+                  <a href="#wycena">Zamów wycenę dopasowaną do Twojego domu</a>
+                </Button>
+              </motion.div>
+            ) : (
+              <div className="h-full flex items-center justify-center">
+                <div className="text-center text-white/30">
+                  <Calculator className="size-16 mx-auto mb-4 opacity-50" />
+                  <p className="font-montserrat text-lg">
+                    Uzupełnij dane i kliknij &quot;Oblicz&quot;
+                  </p>
+                  <p className="text-sm mt-2">
+                    Wyniki pojawią się tutaj
+                  </p>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </div>
+
+        {/* ── Savings over time chart ── */}
+        {showResult && result && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mt-8 bg-white/5 border border-white/10 rounded-2xl p-6"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="size-10 rounded-xl gradient-icon flex items-center justify-center">
+                <Thermometer className="size-5 text-white" />
+              </div>
+              <div>
+                <h3 className="font-montserrat font-bold text-lg text-white">
+                  Oszczędności w czasie
+                </h3>
+                <p className="text-white/40 text-sm">
+                  ile zaoszczędzisz z pompą ciepła — 10 lat
+                </p>
+              </div>
+            </div>
+            <CostRaceChart
+              area={parseFloat(area) || 120}
+              insulationMult={INSULATION_MULT[insulation]?.mult ?? 1}
+            />
+            <p className="text-white/30 text-xs mt-2">
+              * Oszczędności przy stałych cenach energii. Wzrost cen paliw
+              kopalnych zwiększy oszczędności.
+            </p>
+          </motion.div>
+        )}
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center text-white/30 text-xs mt-8"
+        >
+          * Szacunkowe obliczenia oparte na średnich cenach energii w Polsce (2025).
+          Rzeczywiste oszczędności zależą od wielu czynników. Skontaktuj się z nami
+          po dokładną wycenę.
+        </motion.p>
+      </div>
+    </section>
+  );
+}
