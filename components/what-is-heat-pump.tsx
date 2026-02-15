@@ -41,7 +41,7 @@ const infoCards = [
 
 export default function WhatIsHeatPump() {
   return (
-    <section id="co-to-jest" className="relative py-20 px-4 overflow-hidden">
+    <section id="co-to-jest" className="relative py-20 px-4 overflow-hidden scroll-mt-20">
       <StripedPattern
         width={12}
         height={12}
@@ -66,7 +66,7 @@ export default function WhatIsHeatPump() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
           {/* Left: how it works – 2×2 grid */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}

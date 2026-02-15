@@ -7,7 +7,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { GridPattern } from "@/components/ui/grid-pattern";
+import { StripedPattern } from "@/components/ui/striped-pattern";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const faqs = [
   {
@@ -40,13 +41,12 @@ const faqs = [
 export default function FaqSection() {
   return (
     <section id="faq" className="relative py-20 px-4 overflow-hidden">
-      <GridPattern
-        width={60}
-        height={60}
-        strokeDasharray="2 6"
-        className="absolute inset-0 fill-white/[0.01] stroke-white/[0.03] [mask-image:radial-gradient(500px_circle_at_center,white,transparent)]"
+      <StripedPattern
+        width={12}
+        height={12}
+        className="absolute inset-x-0 top-0 h-[60%] z-0 text-white/25 [mask-image:radial-gradient(600px_circle_at_50%_30%,white,transparent)]"
       />
-      <div className="relative max-w-3xl mx-auto">
+      <div className="relative z-10 max-w-3xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +62,10 @@ export default function FaqSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
+          className="relative rounded-2xl border border-white/10 p-2"
         >
+          <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+          <div className="relative rounded-xl bg-white/10 backdrop-blur-md p-4">
           <Accordion type="single" collapsible className="space-y-2">
             {faqs.map((faq, index) => (
               <AccordionItem
@@ -79,6 +82,7 @@ export default function FaqSection() {
               </AccordionItem>
             ))}
           </Accordion>
+          </div>
         </motion.div>
       </div>
     </section>

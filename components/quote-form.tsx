@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { DotPattern } from "@/components/ui/dot-pattern";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 interface QuoteFormData {
   buildingType: string;
@@ -186,9 +187,9 @@ export default function QuoteForm() {
           width={18}
           height={18}
           cr={0.6}
-          className="absolute inset-0 fill-pbac-magenta/[0.04] [mask-image:radial-gradient(500px_circle_at_center,white,transparent)]"
+          className="absolute inset-x-0 top-0 h-[60%] z-0 fill-pbac-magenta/[0.04] [mask-image:radial-gradient(700px,#ffffff45,#00000000)]"
         />
-        <div className="relative max-w-2xl mx-auto text-center">
+        <div className="relative z-10 max-w-2xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -217,7 +218,7 @@ export default function QuoteForm() {
         cr={0.6}
         className="absolute inset-0 fill-pbac-magenta/[0.04] [mask-image:radial-gradient(500px_circle_at_center,white,transparent)]"
       />
-      <div className="relative max-w-2xl mx-auto">
+      <div className="relative z-10 max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -232,7 +233,9 @@ export default function QuoteForm() {
             ciągu 24 godzin.
           </p>
 
-          <Card className="bg-white/5 backdrop-blur border-white/10 rounded-2xl">
+          <div className="relative rounded-2xl border border-white/10 p-2">
+          <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+          <Card className="bg-white/10 backdrop-blur-md border-0 rounded-xl">
             <CardContent className="pt-6">
               <StepIndicator current={step} total={4} />
 
@@ -475,6 +478,7 @@ export default function QuoteForm() {
               </div>
             </CardContent>
           </Card>
+          </div>
         </motion.div>
       </div>
     </section>

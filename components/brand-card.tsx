@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 interface BrandCardProps {
@@ -11,6 +12,7 @@ interface BrandCardProps {
   power?: string;
   imageUrl: string;
   imageAlt: string;
+  slug?: string;
 }
 
 export default function BrandCard({
@@ -23,10 +25,11 @@ export default function BrandCard({
   power,
   imageUrl,
   imageAlt,
+  slug,
 }: BrandCardProps) {
   return (
-    <div className="pt-16">
-      <Card className="relative bg-white/5 backdrop-blur border-white/10 rounded-2xl hover:border-white/20 transition-all duration-300 overflow-visible">
+    <div className="pt-16 h-full">
+      <Card className="relative bg-white/10 backdrop-blur-md border-0 rounded-xl overflow-visible h-full">
         {/* Floating product image — overflows above card */}
         <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-[80%] h-48 pointer-events-none z-10">
           <Image
@@ -88,6 +91,16 @@ export default function BrandCard({
               ))}
             </ul>
           </div>
+
+          {slug && (
+            <Link
+              href={`/produkty/${slug}`}
+              className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors mt-2 group"
+            >
+              Dowiedz się więcej
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </Link>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -5,7 +5,8 @@ import { useRef } from "react";
 import { TrendingDown, Leaf } from "lucide-react";
 import { AuroraText } from "@/components/ui/aurora-text";
 import Co2RadarChart from "@/components/co2-radar-chart";
-import { StripedPattern } from "@/components/ui/striped-pattern";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 /* ── data ─────────────────────────────────────────────── */
 
@@ -53,13 +54,13 @@ export default function ChartsSection() {
 
   return (
     <section id="dane" className="relative py-20 px-4 overflow-hidden" ref={ref}>
-      <StripedPattern
-        width={16}
-        height={16}
-        direction="right"
-        className="absolute inset-0 text-pbac-navy/[0.06] [mask-image:radial-gradient(700px_circle_at_center,white,transparent)]"
+      <DotPattern
+        width={20}
+        height={20}
+        cr={1}
+        className="absolute inset-x-0 top-0 h-[60%] z-0 fill-white/5 [mask-image:radial-gradient(700px,#ffffff45,#00000000)]"
       />
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -77,15 +78,17 @@ export default function ChartsSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           {/* ── chart 1: annual costs ── */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-white/5 border border-white/10 rounded-2xl p-6"
+            className="relative rounded-2xl border border-white/10 p-2 h-full"
           >
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+            <div className="relative rounded-xl bg-white/10 backdrop-blur-md p-6 h-full">
             <div className="flex items-center gap-3 mb-6">
               <div className="size-10 rounded-xl gradient-icon flex items-center justify-center">
                 <TrendingDown className="size-5 text-white" />
@@ -118,6 +121,7 @@ export default function ChartsSection() {
             <p className="text-white/30 text-xs mt-4">
               * Dane szacunkowe na podstawie średnich cen energii w Polsce (2025)
             </p>
+            </div>
           </motion.div>
 
           {/* ── chart 2: CO₂ emissions radar ── */}
@@ -126,8 +130,10 @@ export default function ChartsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-white/5 border border-white/10 rounded-2xl p-6"
+            className="relative rounded-2xl border border-white/10 p-2 h-full"
           >
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+            <div className="relative rounded-xl bg-white/10 backdrop-blur-md p-6 h-full">
             <div className="flex items-center gap-3 mb-4">
               <div className="size-10 rounded-xl gradient-icon flex items-center justify-center">
                 <Leaf className="size-5 text-white" />
@@ -143,6 +149,7 @@ export default function ChartsSection() {
             <p className="text-white/30 text-xs mt-2">
               * Obliczenia uwzględniają polski mix energetyczny (2025)
             </p>
+            </div>
           </motion.div>
         </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
@@ -9,13 +10,16 @@ import { Button } from "@/components/ui/button";
 const DarkVeil = dynamic(() => import("@/components/dark-veil"), { ssr: false });
 
 const navLinks = [
-  { label: "Co to jest", href: "#co-to-jest" },
-  { label: "Korzyści", href: "#korzysci" },
-  { label: "Marki", href: "#marki" },
-  { label: "Kalkulator", href: "#kalkulator" },
-  { label: "vs Klimatyzator", href: "#vs-klimatyzator" },
-  { label: "Porównanie", href: "#porownanie" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Co to jest", href: "/#co-to-jest" },
+  { label: "Korzyści", href: "/#korzysci" },
+  { label: "Marki", href: "/#marki" },
+  { label: "Kalkulator", href: "/#kalkulator" },
+  { label: "vs Klimatyzator", href: "/#vs-klimatyzator" },
+  { label: "Porównanie", href: "/#porownanie" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Poradnik", href: "/poradnik" },
+  { label: "Blog", href: "/blog" },
+  { label: "Kontakt", href: "/kontakt" },
 ];
 
 export default function Navbar() {
@@ -40,8 +44,15 @@ export default function Navbar() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="font-montserrat font-bold text-2xl text-pbac-white">
-            PBAC
+          <a href="/" className="shrink-0">
+            <Image
+              src="/images/pbac-logo.png"
+              alt="PBAC"
+              width={56}
+              height={46}
+              className="h-10 w-auto"
+              priority
+            />
           </a>
 
           {/* Desktop links */}
@@ -60,7 +71,7 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden md:block">
             <Button asChild className="gradient-button rounded-full uppercase text-xs tracking-wider px-6 h-9 text-white border-0">
-              <a href="#wycena">Zamów wycenę</a>
+              <a href="/#wycena">Zamów wycenę</a>
             </Button>
           </div>
 
@@ -96,7 +107,7 @@ export default function Navbar() {
                 </a>
               ))}
               <Button asChild className="gradient-button rounded-full uppercase text-xs tracking-wider px-6 h-9 text-white border-0 w-fit">
-                <a href="#wycena" onClick={() => setMobileOpen(false)}>Zamów wycenę</a>
+                <a href="/#wycena" onClick={() => setMobileOpen(false)}>Zamów wycenę</a>
               </Button>
             </div>
           </motion.div>

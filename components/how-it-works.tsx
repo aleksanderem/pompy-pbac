@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import { DotPattern } from "@/components/ui/dot-pattern";
+import { StripedPattern } from "@/components/ui/striped-pattern";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const steps = [
   {
@@ -33,13 +34,12 @@ const steps = [
 export default function HowItWorks() {
   return (
     <section id="jak-dzialamy" className="relative py-20 px-4 overflow-hidden">
-      <DotPattern
-        width={24}
-        height={24}
-        cr={0.8}
-        className="absolute inset-0 fill-white/[0.04] [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
+      <StripedPattern
+        width={12}
+        height={12}
+        className="absolute inset-x-0 top-0 h-[60%] z-0 text-white/25 [mask-image:radial-gradient(600px_circle_at_50%_30%,white,transparent)]"
       />
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,8 +61,10 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="relative text-center"
+              className="relative rounded-2xl border border-white/10 p-2"
             >
+              <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+              <div className="relative rounded-xl bg-white/10 backdrop-blur-md p-6 text-center">
               <span
                 className="font-montserrat text-5xl md:text-6xl font-bold inline-block mb-4"
                 style={{
@@ -79,6 +81,7 @@ export default function HowItWorks() {
               <p className="text-white/60 text-sm leading-relaxed max-w-xs mx-auto">
                 {step.description}
               </p>
+              </div>
             </motion.div>
           ))}
         </div>

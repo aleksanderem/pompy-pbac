@@ -5,7 +5,8 @@ import { Check, X, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AuroraText } from "@/components/ui/aurora-text";
-import { GridPattern } from "@/components/ui/grid-pattern";
+import { StripedPattern } from "@/components/ui/striped-pattern";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const comparisons = [
   {
@@ -61,13 +62,12 @@ function StatusIcon({ value }: { value: boolean | string }) {
 export default function HeatPumpVsAc() {
   return (
     <section id="vs-klimatyzator" className="relative py-20 px-4 overflow-hidden">
-      <GridPattern
-        width={45}
-        height={45}
-        strokeDasharray="4 4"
-        className="absolute inset-0 fill-transparent stroke-pbac-magenta/[0.05] [mask-image:linear-gradient(to_bottom,transparent,white_15%,white_85%,transparent)]"
+      <StripedPattern
+        width={12}
+        height={12}
+        className="absolute inset-x-0 top-0 h-[60%] z-0 text-white/25 [mask-image:radial-gradient(600px_circle_at_50%_30%,white,transparent)]"
       />
-      <div className="relative max-w-5xl mx-auto">
+      <div className="relative z-10 max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -141,7 +141,9 @@ export default function HeatPumpVsAc() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          <Card className="bg-white/5 border-pbac-magenta/20 rounded-2xl">
+          <div className="relative rounded-2xl border border-white/10 p-2 h-full">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+            <Card className="bg-white/10 backdrop-blur-md border-0 rounded-xl h-full">
             <CardContent className="pt-6">
               <h3 className="font-montserrat font-bold text-xl mb-3 text-white">
                 Wybierz pompę ciepła, gdy:
@@ -170,8 +172,11 @@ export default function HeatPumpVsAc() {
               </ul>
             </CardContent>
           </Card>
+          </div>
 
-          <Card className="bg-white/5 border-white/10 rounded-2xl">
+          <div className="relative rounded-2xl border border-white/10 p-2 h-full">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+            <Card className="bg-white/10 backdrop-blur-md border-0 rounded-xl h-full">
             <CardContent className="pt-6">
               <h3 className="font-montserrat font-bold text-xl mb-3 text-white">
                 Klimatyzator wystarczy, gdy:
@@ -196,6 +201,7 @@ export default function HeatPumpVsAc() {
               </ul>
             </CardContent>
           </Card>
+          </div>
         </motion.div>
 
         <motion.div

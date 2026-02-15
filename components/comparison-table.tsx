@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import { StripedPattern } from "@/components/ui/striped-pattern";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const headers = ["Cecha", "Neoheat", "Samsung", "Mitsubishi Heavy", "Fujitsu"];
 
@@ -18,13 +19,13 @@ const rows = [
 export default function ComparisonTable() {
   return (
     <section id="porownanie" className="relative py-20 px-4 overflow-hidden">
-      <StripedPattern
-        width={14}
-        height={14}
-        direction="right"
-        className="absolute inset-0 text-white/[0.025] [mask-image:linear-gradient(to_bottom,transparent,white_20%,white_80%,transparent)]"
+      <DotPattern
+        width={20}
+        height={20}
+        cr={1}
+        className="absolute inset-x-0 top-0 h-[60%] z-0 fill-white/5 [mask-image:radial-gradient(700px,#ffffff45,#00000000)]"
       />
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -87,8 +88,10 @@ export default function ComparisonTable() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: brandIndex * 0.1 }}
-              className="bg-white/5 border border-white/10 rounded-2xl p-6"
+              className="relative rounded-2xl border border-white/10 p-2"
             >
+              <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+              <div className="relative rounded-xl bg-white/10 backdrop-blur-md p-6">
               <h3 className="font-montserrat text-lg font-bold mb-4">{brand}</h3>
               <div className="space-y-3">
                 {rows.map((row) => (
@@ -97,6 +100,7 @@ export default function ComparisonTable() {
                     <span className="text-white/80">{row[brandIndex + 1]}</span>
                   </div>
                 ))}
+              </div>
               </div>
             </motion.div>
           ))}

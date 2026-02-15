@@ -1,10 +1,15 @@
+import Image from "next/image";
+
 const quickLinks = [
-  { label: "Korzyści", href: "#korzysci" },
-  { label: "Marki", href: "#marki" },
-  { label: "Jak działamy", href: "#jak-dzialamy" },
-  { label: "Porównanie", href: "#porownanie" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Zamów wycenę", href: "#wycena" },
+  { label: "Korzyści", href: "/#korzysci" },
+  { label: "Marki", href: "/#marki" },
+  { label: "Jak działamy", href: "/#jak-dzialamy" },
+  { label: "Porównanie", href: "/#porownanie" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Poradnik", href: "/poradnik" },
+  { label: "Blog", href: "/blog" },
+  { label: "Kontakt", href: "/kontakt" },
+  { label: "Zamów wycenę", href: "/#wycena" },
 ];
 
 export default function Footer() {
@@ -17,9 +22,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Column 1: Logo + description */}
           <div>
-            <span className="font-montserrat font-bold text-2xl text-white">
-              PBAC
-            </span>
+            <Image
+              src="/images/pbac-logo.png"
+              alt="PBAC"
+              width={74}
+              height={60}
+              className="h-14 w-auto"
+            />
             <p className="mt-4 text-white/50 text-sm leading-relaxed">
               Profesjonalny montaż i serwis klimatyzacji oraz pomp ciepła w Warszawie
             </p>
@@ -50,15 +59,16 @@ export default function Footer() {
               Kontakt
             </h4>
             <ul className="space-y-2 text-white/50 text-sm">
-              <li>Warszawa</li>
+              <li>Marszałkowska 55/73</li>
+              <li>00-676 Warszawa</li>
               <li>
-                <a href="tel:+48XXXXXXXXX" className="hover:text-white transition-colors">
-                  +48 XXX XXX XXX
+                <a href="tel:+48503151802" className="hover:text-white transition-colors">
+                  +48 503 151 802
                 </a>
               </li>
               <li>
-                <a href="mailto:kontakt@pbac.pl" className="hover:text-white transition-colors">
-                  kontakt@pbac.pl
+                <a href="mailto:montaz@pbac.pl" className="hover:text-white transition-colors">
+                  montaz@pbac.pl
                 </a>
               </li>
               <li>

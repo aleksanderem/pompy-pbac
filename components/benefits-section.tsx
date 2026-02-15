@@ -35,7 +35,7 @@ const benefits = [
 
 export default function BenefitsSection() {
   return (
-    <section id="korzysci" className="relative py-20 px-4 overflow-hidden">
+    <section id="korzysci" className="relative py-20 px-4 overflow-hidden scroll-mt-20">
       <DotPattern
         width={20}
         height={20}

@@ -3,9 +3,11 @@
 import { motion } from "motion/react";
 import BrandCard from "@/components/brand-card";
 import { StripedPattern } from "@/components/ui/striped-pattern";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const brands = [
   {
+    slug: "neoheat-eko-mono-r290",
     name: "Neoheat",
     origin: "Polska marka (Iglotech, od 2017)",
     series: "Eko Mono · Eko II Plus · Heavy · R290",
@@ -24,6 +26,7 @@ const brands = [
     imageAlt: "Pompa ciepła Neoheat Eko II Plus — jednostka zewnętrzna",
   },
   {
+    slug: "samsung-ehs-mono-r290",
     name: "Samsung EHS Mono R290",
     origin: "Samsung Climate Solutions",
     series: "EHS Mono R290 Standard · ClimateHub · Control Kit",
@@ -43,6 +46,7 @@ const brands = [
     imageAlt: "Pompa ciepła Samsung EHS Mono R290 — monoblock",
   },
   {
+    slug: "mitsubishi-heavy-hydrolution",
     name: "Mitsubishi Heavy Hydrolution",
     origin: "Mitsubishi Heavy Industries",
     series: "Flexible Split — ALL-IN-ONE",
@@ -62,6 +66,7 @@ const brands = [
     imageAlt: "Mitsubishi Heavy Hydrolution — jednostka zewnętrzna split",
   },
   {
+    slug: "fujitsu-waterstage",
     name: "Fujitsu Waterstage",
     origin: "Fujitsu General",
     series: "Comfort R32 · High Power · Super High Power · Monobloc",
@@ -84,13 +89,13 @@ const brands = [
 
 export default function BrandsSection() {
   return (
-    <section id="marki" className="relative py-20 px-4 overflow-hidden">
+    <section id="marki" className="relative py-20 px-4 overflow-hidden scroll-mt-20">
       <StripedPattern
         width={12}
         height={12}
-        className="absolute inset-0 text-white/[0.03] [mask-image:linear-gradient(to_bottom,transparent,white_20%,white_80%,transparent)]"
+        className="absolute inset-x-0 top-0 h-[60%] z-0 text-white/25 [mask-image:radial-gradient(600px_circle_at_50%_30%,white,transparent)]"
       />
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -116,7 +121,15 @@ export default function BrandsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="relative rounded-2xl border border-white/10 p-2 overflow-visible h-full"
             >
+              <GlowingEffect
+                spread={40}
+                glow={true}
+                disabled={false}
+                proximity={64}
+                inactiveZone={0.01}
+              />
               <BrandCard {...brand} />
             </motion.div>
           ))}
