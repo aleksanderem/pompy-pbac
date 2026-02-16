@@ -4,6 +4,78 @@ import { memo, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { animate } from "motion/react";
 
+/**
+ * Shared coordinator for all GlowingEffect instances.
+ * Instead of each instance independently calling getBoundingClientRect()
+ * on every mouse move (causing N forced reflows), we batch all reads
+ * into a single rAF tick: one reflow for all instances.
+ */
+const glowInstances = new Set<{
+  element: HTMLDivElement;
+  update: (rect: DOMRect, mouseX: number, mouseY: number) => void;
+}>();
+
+let sharedRAF = 0;
+let lastMouse = { x: 0, y: 0 };
+
+function scheduleSharedUpdate(e?: { x: number; y: number }) {
+  if (e) {
+    lastMouse = { x: e.x, y: e.y };
+  }
+
+  if (sharedRAF) return; // already scheduled
+
+  sharedRAF = requestAnimationFrame(() => {
+    sharedRAF = 0;
+    const { x: mouseX, y: mouseY } = lastMouse;
+
+    // Single read phase: batch all getBoundingClientRect calls
+    const entries: Array<{
+      rect: DOMRect;
+      update: (rect: DOMRect, mouseX: number, mouseY: number) => void;
+    }> = [];
+
+    for (const inst of glowInstances) {
+      entries.push({ rect: inst.element.getBoundingClientRect(), update: inst.update });
+    }
+
+    // Write phase: apply all style updates
+    for (const entry of entries) {
+      entry.update(entry.rect, mouseX, mouseY);
+    }
+  });
+}
+
+let listenerCount = 0;
+
+function addSharedListeners() {
+  listenerCount++;
+  if (listenerCount === 1) {
+    window.addEventListener("scroll", handleSharedScroll, { passive: true });
+    document.body.addEventListener("pointermove", handleSharedPointerMove, { passive: true });
+  }
+}
+
+function removeSharedListeners() {
+  listenerCount--;
+  if (listenerCount === 0) {
+    window.removeEventListener("scroll", handleSharedScroll);
+    document.body.removeEventListener("pointermove", handleSharedPointerMove);
+    if (sharedRAF) {
+      cancelAnimationFrame(sharedRAF);
+      sharedRAF = 0;
+    }
+  }
+}
+
+function handleSharedScroll() {
+  scheduleSharedUpdate();
+}
+
+function handleSharedPointerMove(e: PointerEvent) {
+  scheduleSharedUpdate(e);
+}
+
 interface GlowingEffectProps {
   blur?: number;
   inactiveZone?: number;
@@ -30,68 +102,53 @@ const GlowingEffect = memo(
     disabled = true,
   }: GlowingEffectProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const lastPosition = useRef({ x: 0, y: 0 });
-    const animationFrameRef = useRef<number>(0);
+    const isVisibleRef = useRef(false);
 
-    const handleMove = useCallback(
-      (e?: MouseEvent | { x: number; y: number }) => {
-        if (!containerRef.current) return;
+    // The write-only update function: receives a pre-read rect, no layout reads
+    const updateGlow = useCallback(
+      (rect: DOMRect, mouseX: number, mouseY: number) => {
+        const element = containerRef.current;
+        if (!element || !isVisibleRef.current) return;
 
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
+        const { left, top, width, height } = rect;
+        const center = [left + width * 0.5, top + height * 0.5];
+        const distanceFromCenter = Math.hypot(
+          mouseX - center[0],
+          mouseY - center[1]
+        );
+        const inactiveRadius = 0.5 * Math.min(width, height) * inactiveZone;
+
+        if (distanceFromCenter < inactiveRadius) {
+          element.style.setProperty("--active", "0");
+          return;
         }
 
-        animationFrameRef.current = requestAnimationFrame(() => {
-          const element = containerRef.current;
-          if (!element) return;
+        const isActive =
+          mouseX > left - proximity &&
+          mouseX < left + width + proximity &&
+          mouseY > top - proximity &&
+          mouseY < top + height + proximity;
 
-          const { left, top, width, height } = element.getBoundingClientRect();
-          const mouseX = e?.x ?? lastPosition.current.x;
-          const mouseY = e?.y ?? lastPosition.current.y;
+        element.style.setProperty("--active", isActive ? "1" : "0");
 
-          if (e) {
-            lastPosition.current = { x: mouseX, y: mouseY };
-          }
+        if (!isActive) return;
 
-          const center = [left + width * 0.5, top + height * 0.5];
-          const distanceFromCenter = Math.hypot(
-            mouseX - center[0],
-            mouseY - center[1]
-          );
-          const inactiveRadius = 0.5 * Math.min(width, height) * inactiveZone;
+        const currentAngle =
+          parseFloat(element.style.getPropertyValue("--start")) || 0;
+        const targetAngle =
+          (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) /
+            Math.PI +
+          90;
 
-          if (distanceFromCenter < inactiveRadius) {
-            element.style.setProperty("--active", "0");
-            return;
-          }
+        const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
+        const newAngle = currentAngle + angleDiff;
 
-          const isActive =
-            mouseX > left - proximity &&
-            mouseX < left + width + proximity &&
-            mouseY > top - proximity &&
-            mouseY < top + height + proximity;
-
-          element.style.setProperty("--active", isActive ? "1" : "0");
-
-          if (!isActive) return;
-
-          const currentAngle =
-            parseFloat(element.style.getPropertyValue("--start")) || 0;
-          let targetAngle =
-            (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) /
-              Math.PI +
-            90;
-
-          const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
-          const newAngle = currentAngle + angleDiff;
-
-          animate(currentAngle, newAngle, {
-            duration: movementDuration,
-            ease: [0.16, 1, 0.3, 1],
-            onUpdate: (value) => {
-              element.style.setProperty("--start", String(value));
-            },
-          });
+        animate(currentAngle, newAngle, {
+          duration: movementDuration,
+          ease: [0.16, 1, 0.3, 1],
+          onUpdate: (value) => {
+            element.style.setProperty("--start", String(value));
+          },
         });
       },
       [inactiveZone, proximity, movementDuration]
@@ -99,23 +156,33 @@ const GlowingEffect = memo(
 
     useEffect(() => {
       if (disabled) return;
+      const element = containerRef.current;
+      if (!element) return;
 
-      const handleScroll = () => handleMove();
-      const handlePointerMove = (e: PointerEvent) => handleMove(e);
+      const instance = { element, update: updateGlow };
 
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      document.body.addEventListener("pointermove", handlePointerMove, {
-        passive: true,
-      });
+      // Use IntersectionObserver to only process visible instances
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisibleRef.current = entry.isIntersecting;
+          if (entry.isIntersecting) {
+            glowInstances.add(instance);
+          } else {
+            glowInstances.delete(instance);
+          }
+        },
+        { rootMargin: "100px" }
+      );
+      observer.observe(element);
+
+      addSharedListeners();
 
       return () => {
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
-        window.removeEventListener("scroll", handleScroll);
-        document.body.removeEventListener("pointermove", handlePointerMove);
+        observer.disconnect();
+        glowInstances.delete(instance);
+        removeSharedListeners();
       };
-    }, [handleMove, disabled]);
+    }, [updateGlow, disabled]);
 
     return (
       <>

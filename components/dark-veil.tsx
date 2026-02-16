@@ -133,8 +133,14 @@ export default function DarkVeil({
       program.uniforms.uResolution.value.set(w, h);
     };
 
-    window.addEventListener("resize", resize);
     resize();
+
+    let resizeTimer = 0;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(resize, 150);
+    };
+    window.addEventListener("resize", debouncedResize);
 
     const start = performance.now();
     let frame = 0;
@@ -155,7 +161,8 @@ export default function DarkVeil({
 
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", debouncedResize);
     };
   }, [
     hueShift,

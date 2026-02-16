@@ -168,10 +168,15 @@ export default function CostRaceChart({ area = 120, insulationMult = 1 }: CostRa
 
     chart.setOption(initialOption);
 
-    const handleResize = () => chart.resize();
+    let resizeTimer = 0;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => chart.resize(), 150);
+    };
     window.addEventListener("resize", handleResize);
 
     return () => {
+      clearTimeout(resizeTimer);
       window.removeEventListener("resize", handleResize);
       chart.dispose();
       chartRef.current = null;
