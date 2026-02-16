@@ -15,7 +15,7 @@ export const authors: Author[] = [
     experience: "10+ lat doświadczenia",
     description:
       "Zespół certyfikowanych instalatorów pomp ciepła PBAC z Warszawy. Ponad 10 lat doświadczenia w montażu i serwisie systemów grzewczych Samsung, Mitsubishi Heavy, Fujitsu i Neoheat.",
-    image: "https://pbac.pl/images/pbac-logo.png",
+    image: "https://pompy.pbac.pl/images/pbac-logo.png",
   },
 ];
 

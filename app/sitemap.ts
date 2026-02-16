@@ -5,7 +5,7 @@ import { getAllProductSlugs } from "@/lib/products";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://pbac.pl";
+  const baseUrl = "https://pompy.pbac.pl";
 
   const articleEntries: MetadataRoute.Sitemap = getAllArticleSlugs().map(
     (slug) => {

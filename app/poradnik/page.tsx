@@ -32,24 +32,24 @@ export default function PoradnikPage() {
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "https://pbac.pl/poradnik",
+    "@id": "https://pompy.pbac.pl/poradnik",
     name: "Kompletny poradnik o pompach ciepła 2026",
     description:
       "Wszystko o pompach ciepła w jednym miejscu — jak działają, ile kosztują, jakie dotacje, montaż, porównanie czynników R290 vs R32.",
-    url: "https://pbac.pl/poradnik",
-    isPartOf: { "@id": "https://pbac.pl/#website" },
+    url: "https://pompy.pbac.pl/poradnik",
+    isPartOf: { "@id": "https://pompy.pbac.pl/#website" },
     mainEntity: {
       "@type": "ItemList",
       itemListElement: articles.map((a, i) => ({
         "@type": "ListItem",
         position: i + 1,
         name: a.title,
-        url: `https://pbac.pl/blog/${a.slug}`,
+        url: `https://pompy.pbac.pl/blog/${a.slug}`,
       })),
     },
     publisher: {
       "@type": "Organization",
-      "@id": "https://pbac.pl/#organization",
+      "@id": "https://pompy.pbac.pl/#organization",
       name: "PBAC",
     },
   };
@@ -62,13 +62,13 @@ export default function PoradnikPage() {
         "@type": "ListItem",
         position: 1,
         name: "Strona główna",
-        item: "https://pbac.pl",
+        item: "https://pompy.pbac.pl",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Poradnik",
-        item: "https://pbac.pl/poradnik",
+        item: "https://pompy.pbac.pl/poradnik",
       },
     ],
   };

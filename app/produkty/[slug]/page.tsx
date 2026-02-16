@@ -41,7 +41,7 @@ export default async function ProductPage({ params }: Props) {
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": `https://pbac.pl/produkty/${product.slug}`,
+    "@id": `https://pompy.pbac.pl/produkty/${product.slug}`,
     name: product.name,
     description: product.description,
     image: product.imageUrl,
@@ -50,7 +50,7 @@ export default async function ProductPage({ params }: Props) {
       name: product.name.split(" ")[0],
     },
     category: "Pompy ciepła",
-    url: `https://pbac.pl/produkty/${product.slug}`,
+    url: `https://pompy.pbac.pl/produkty/${product.slug}`,
     additionalProperty: [
       {
         "@type": "PropertyValue",
@@ -79,10 +79,10 @@ export default async function ProductPage({ params }: Props) {
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
-        "@id": "https://pbac.pl/#organization",
+        "@id": "https://pompy.pbac.pl/#organization",
         name: "PBAC",
       },
-      url: `https://pbac.pl/produkty/${product.slug}`,
+      url: `https://pompy.pbac.pl/produkty/${product.slug}`,
       offerCount: product.models.length,
     },
     ...(product.certifications && product.certifications.length > 0
@@ -100,19 +100,19 @@ export default async function ProductPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Strona główna",
-        item: "https://pbac.pl",
+        item: "https://pompy.pbac.pl",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Produkty",
-        item: "https://pbac.pl/produkty",
+        item: "https://pompy.pbac.pl/produkty",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: product.name,
-        item: `https://pbac.pl/produkty/${product.slug}`,
+        item: `https://pompy.pbac.pl/produkty/${product.slug}`,
       },
     ],
   };

@@ -17,7 +17,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pbac.pl"),
+  metadataBase: new URL("https://pompy.pbac.pl"),
   title: "Pompy Ciepła — Montaż i Serwis | PBAC Warszawa",
   description:
     "Profesjonalny montaż pomp ciepła w Warszawie. Samsung, Mitsubishi Heavy, Fujitsu, Neoheat. Wycena gratis.",
@@ -48,12 +48,12 @@ export default function RootLayout({
           data={{
             "@context": "https://schema.org",
             "@type": "Organization",
-            "@id": "https://pbac.pl/#organization",
+            "@id": "https://pompy.pbac.pl/#organization",
             name: "PBAC",
-            url: "https://pbac.pl",
+            url: "https://pompy.pbac.pl",
             logo: {
               "@type": "ImageObject",
-              url: "https://pbac.pl/images/pbac-logo.png",
+              url: "https://pompy.pbac.pl/images/pbac-logo.png",
               width: 184,
               height: 150,
             },
@@ -78,7 +78,7 @@ export default function RootLayout({
               },
               geoRadius: "50000",
             },
-            sameAs: ["https://pbac.pl"],
+            sameAs: ["https://pompy.pbac.pl"],
             contactPoint: {
               "@type": "ContactPoint",
               telephone: "+48503151802",

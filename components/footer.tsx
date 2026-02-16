@@ -73,7 +73,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://pbac.pl"
+                  href="https://pompy.pbac.pl"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"

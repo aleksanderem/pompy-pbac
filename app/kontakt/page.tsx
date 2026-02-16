@@ -24,24 +24,24 @@ export default function ContactPage() {
   const contactPageSchema = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    "@id": "https://pbac.pl/kontakt",
+    "@id": "https://pompy.pbac.pl/kontakt",
     name: "Kontakt — PBAC",
     description:
       "Skontaktuj się z PBAC — profesjonalny montaż i serwis pomp ciepła w Warszawie.",
-    url: "https://pbac.pl/kontakt",
-    isPartOf: { "@id": "https://pbac.pl/#website" },
+    url: "https://pompy.pbac.pl/kontakt",
+    isPartOf: { "@id": "https://pompy.pbac.pl/#website" },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["#kontakt-info"],
     },
     mainEntity: {
       "@type": "HVACBusiness",
-      "@id": "https://pbac.pl/#localbusiness",
+      "@id": "https://pompy.pbac.pl/#localbusiness",
       name: "PBAC",
       telephone: "+48503151802",
       email: "montaz@pbac.pl",
-      url: "https://pbac.pl",
-      image: "https://pbac.pl/images/pbac-logo.png",
+      url: "https://pompy.pbac.pl",
+      image: "https://pompy.pbac.pl/images/pbac-logo.png",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Marszałkowska 55/73",
@@ -100,13 +100,13 @@ export default function ContactPage() {
         "@type": "ListItem",
         position: 1,
         name: "Strona główna",
-        item: "https://pbac.pl",
+        item: "https://pompy.pbac.pl",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Kontakt",
-        item: "https://pbac.pl/kontakt",
+        item: "https://pompy.pbac.pl/kontakt",
       },
     ],
   };

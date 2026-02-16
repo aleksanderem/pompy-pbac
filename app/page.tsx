@@ -30,10 +30,10 @@ export const metadata: Metadata = {
       "Montaż pomp ciepła od 30 000 zł z dotacją. Samsung, Mitsubishi, Fujitsu, Neoheat — certyfikowani instalatorzy w Warszawie.",
     type: "website",
     siteName: "PBAC",
-    url: "https://pbac.pl",
+    url: "https://pompy.pbac.pl",
     images: [
       {
-        url: "https://pbac.pl/images/pbac-logo.png",
+        url: "https://pompy.pbac.pl/images/pbac-logo.png",
         width: 184,
         height: 150,
         alt: "PBAC — Pompy Ciepła Warszawa",
@@ -46,12 +46,12 @@ export default function Home() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://pbac.pl/#website",
+    "@id": "https://pompy.pbac.pl/#website",
     name: "PBAC — Pompy Ciepła Warszawa",
-    url: "https://pbac.pl",
+    url: "https://pompy.pbac.pl",
     description:
       "Profesjonalny montaż pomp ciepła w Warszawie. Samsung, Mitsubishi Heavy, Fujitsu, Neoheat. Wycena gratis.",
-    publisher: { "@id": "https://pbac.pl/#organization" },
+    publisher: { "@id": "https://pompy.pbac.pl/#organization" },
     inLanguage: "pl-PL",
   };
 
@@ -65,10 +65,10 @@ export default function Home() {
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "HVACBusiness",
-    "@id": "https://pbac.pl/#localbusiness",
+    "@id": "https://pompy.pbac.pl/#localbusiness",
     name: "PBAC — Montaż pomp ciepła i klimatyzacji",
-    image: "https://pbac.pl/images/pbac-logo.png",
-    url: "https://pbac.pl",
+    image: "https://pompy.pbac.pl/images/pbac-logo.png",
+    url: "https://pompy.pbac.pl",
     telephone: "+48503151802",
     email: "montaz@pbac.pl",
     address: {
@@ -159,7 +159,7 @@ export default function Home() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": "https://pbac.pl/#faq",
+    "@id": "https://pompy.pbac.pl/#faq",
     mainEntity: [
       {
         "@type": "Question",
@@ -226,7 +226,7 @@ export default function Home() {
         position: 1,
         name: "Kontakt i wycena",
         text: "Skontaktuj się z nami telefonicznie lub przez formularz, a przygotujemy bezpłatną wycenę dopasowaną do Twojego domu.",
-        url: "https://pbac.pl/#wycena",
+        url: "https://pompy.pbac.pl/#wycena",
       },
       {
         "@type": "HowToStep",
@@ -256,7 +256,7 @@ export default function Home() {
       name: "Montaż pompy ciepła",
       description:
         "Profesjonalny montaż pomp ciepła powietrze-woda z doborem, instalacją hydrauliczną i elektryczną, uruchomieniem i konfiguracją.",
-      provider: { "@id": "https://pbac.pl/#localbusiness" },
+      provider: { "@id": "https://pompy.pbac.pl/#localbusiness" },
       areaServed: { "@type": "City", name: "Warszawa" },
       offers: {
         "@type": "AggregateOffer",
@@ -272,7 +272,7 @@ export default function Home() {
       name: "Serwis pomp ciepła",
       description:
         "Okresowy przegląd, czyszczenie, konserwacja i naprawy pomp ciepła wszystkich marek — Samsung, Mitsubishi Heavy, Fujitsu, Neoheat.",
-      provider: { "@id": "https://pbac.pl/#localbusiness" },
+      provider: { "@id": "https://pompy.pbac.pl/#localbusiness" },
       areaServed: { "@type": "City", name: "Warszawa" },
     },
     {
@@ -281,7 +281,7 @@ export default function Home() {
       name: "Pomoc z dofinansowaniem na pompę ciepła",
       description:
         "Kompleksowa pomoc w uzyskaniu dotacji z programu Czyste Powietrze, Moje Ciepło i ulgi termomodernizacyjnej na pompę ciepła.",
-      provider: { "@id": "https://pbac.pl/#localbusiness" },
+      provider: { "@id": "https://pompy.pbac.pl/#localbusiness" },
       areaServed: { "@type": "City", name: "Warszawa" },
     },
   ];
@@ -294,7 +294,7 @@ export default function Home() {
         "@type": "ListItem",
         position: 1,
         name: "Strona główna",
-        item: "https://pbac.pl",
+        item: "https://pompy.pbac.pl",
       },
     ],
   };

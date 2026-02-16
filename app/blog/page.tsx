@@ -18,7 +18,7 @@ export const metadata: Metadata = {
       "Artykuły eksperckie o pompach ciepła: działanie, koszty, dotacje, montaż. Praktyczna wiedza od certyfikowanych instalatorów z Warszawy.",
     type: "website",
     siteName: "PBAC",
-    url: "https://pbac.pl/blog",
+    url: "https://pompy.pbac.pl/blog",
   },
 };
 
@@ -30,20 +30,20 @@ export default function BlogPage() {
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "https://pbac.pl/blog",
+    "@id": "https://pompy.pbac.pl/blog",
     name: "Blog o pompach ciepła",
     description:
       "Artykuły eksperckie o pompach ciepła: jak działają, ile kosztują, jakie dotacje, montaż krok po kroku.",
-    url: "https://pbac.pl/blog",
-    isPartOf: { "@id": "https://pbac.pl/#website" },
-    publisher: { "@id": "https://pbac.pl/#organization" },
+    url: "https://pompy.pbac.pl/blog",
+    isPartOf: { "@id": "https://pompy.pbac.pl/#website" },
+    publisher: { "@id": "https://pompy.pbac.pl/#organization" },
     inLanguage: "pl-PL",
     mainEntity: {
       "@type": "ItemList",
       itemListElement: sorted.map((article, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        url: `https://pbac.pl/blog/${article.slug}`,
+        url: `https://pompy.pbac.pl/blog/${article.slug}`,
         name: article.title,
       })),
     },
@@ -57,13 +57,13 @@ export default function BlogPage() {
         "@type": "ListItem",
         position: 1,
         name: "Strona główna",
-        item: "https://pbac.pl",
+        item: "https://pompy.pbac.pl",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://pbac.pl/blog",
+        item: "https://pompy.pbac.pl/blog",
       },
     ],
   };

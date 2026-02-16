@@ -56,7 +56,7 @@ export default async function ArticlePage({ params }: Props) {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "@id": `https://pbac.pl/blog/${article.slug}`,
+    "@id": `https://pompy.pbac.pl/blog/${article.slug}`,
     headline: article.title,
     description: article.metaDescription,
     ...(article.summary ? { abstract: article.summary } : {}),
@@ -77,33 +77,33 @@ export default async function ArticlePage({ params }: Props) {
           image: author.image,
           worksFor: {
             "@type": "Organization",
-            "@id": "https://pbac.pl/#organization",
+            "@id": "https://pompy.pbac.pl/#organization",
             name: "PBAC",
           },
         }
       : {
           "@type": "Organization",
-          "@id": "https://pbac.pl/#organization",
+          "@id": "https://pompy.pbac.pl/#organization",
           name: "PBAC",
         },
     publisher: {
       "@type": "Organization",
-      "@id": "https://pbac.pl/#organization",
+      "@id": "https://pompy.pbac.pl/#organization",
       name: "PBAC",
       logo: {
         "@type": "ImageObject",
-        url: "https://pbac.pl/images/pbac-logo.png",
+        url: "https://pompy.pbac.pl/images/pbac-logo.png",
         width: 184,
         height: 150,
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://pbac.pl/blog/${article.slug}`,
+      "@id": `https://pompy.pbac.pl/blog/${article.slug}`,
     },
-    url: `https://pbac.pl/blog/${article.slug}`,
+    url: `https://pompy.pbac.pl/blog/${article.slug}`,
     inLanguage: "pl-PL",
-    isPartOf: { "@id": "https://pbac.pl/blog" },
+    isPartOf: { "@id": "https://pompy.pbac.pl/blog" },
     articleSection: article.category,
     wordCount: article.sections.reduce(
       (acc, s) => acc + s.content.split(/\s+/).length + s.heading.split(/\s+/).length,
@@ -120,19 +120,19 @@ export default async function ArticlePage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Strona główna",
-        item: "https://pbac.pl",
+        item: "https://pompy.pbac.pl",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://pbac.pl/blog",
+        item: "https://pompy.pbac.pl/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: article.title,
-        item: `https://pbac.pl/blog/${article.slug}`,
+        item: `https://pompy.pbac.pl/blog/${article.slug}`,
       },
     ],
   };
