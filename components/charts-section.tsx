@@ -4,7 +4,8 @@ import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { TrendingDown, Leaf } from "lucide-react";
 import { AuroraText } from "@/components/ui/aurora-text";
-import Co2RadarChart from "@/components/co2-radar-chart";
+import dynamic from "next/dynamic";
+const Co2RadarChart = dynamic(() => import("@/components/co2-radar-chart"), { ssr: false });
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 

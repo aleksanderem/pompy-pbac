@@ -3,7 +3,8 @@
 import { useState, useMemo } from "react";
 import { motion } from "motion/react";
 import { Zap, Flame } from "lucide-react";
-import CostRaceChart from "@/components/cost-race-chart";
+import dynamic from "next/dynamic";
+const CostRaceChart = dynamic(() => import("@/components/cost-race-chart"), { ssr: false });
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

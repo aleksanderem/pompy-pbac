@@ -1,21 +1,23 @@
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import JsonLd from "@/components/json-ld";
 import Navbar from "@/components/navbar";
 import HeroSection from "@/components/hero-section";
 import WhatIsHeatPump from "@/components/what-is-heat-pump";
 import BenefitsSection from "@/components/benefits-section";
 import BrandsSection from "@/components/brands-section";
-import CalculatorSection from "@/components/calculator-section";
-import HeatPumpVsAc from "@/components/heat-pump-vs-ac";
-import ChartsSection from "@/components/charts-section";
-import HowItWorks from "@/components/how-it-works";
-import ComparisonTable from "@/components/comparison-table";
-import TestimonialsSection from "@/components/testimonials-section";
-import QuoteForm from "@/components/quote-form";
-import FaqSection from "@/components/faq-section";
-import Footer from "@/components/footer";
-import StickyPhone from "@/components/sticky-phone";
 import { testimonials } from "@/lib/testimonials";
+
+const CalculatorSection = dynamic(() => import("@/components/calculator-section"));
+const HeatPumpVsAc = dynamic(() => import("@/components/heat-pump-vs-ac"));
+const ChartsSection = dynamic(() => import("@/components/charts-section"));
+const HowItWorks = dynamic(() => import("@/components/how-it-works"));
+const ComparisonTable = dynamic(() => import("@/components/comparison-table"));
+const TestimonialsSection = dynamic(() => import("@/components/testimonials-section"));
+const QuoteForm = dynamic(() => import("@/components/quote-form"));
+const FaqSection = dynamic(() => import("@/components/faq-section"));
+const Footer = dynamic(() => import("@/components/footer"));
+const StickyPhone = dynamic(() => import("@/components/sticky-phone"));
 
 export const metadata: Metadata = {
   title: "Pompy Ciepła — Montaż i Serwis | PBAC Warszawa",

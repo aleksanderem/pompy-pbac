@@ -103,7 +103,7 @@ export default function DarkVeil({
     if (!parent) return;
 
     const renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio, 2),
+      dpr: 1,
       canvas,
     });
 
@@ -144,10 +144,19 @@ export default function DarkVeil({
 
     const start = performance.now();
     let frame = 0;
+    let visible = true;
+    let lastFrame = 0;
+    const TARGET_INTERVAL = 1000 / 30; // cap at 30fps
 
-    const loop = () => {
+    const loop = (now: number) => {
+      if (!visible) return;
+      if (now - lastFrame < TARGET_INTERVAL) {
+        frame = requestAnimationFrame(loop);
+        return;
+      }
+      lastFrame = now;
       program.uniforms.uTime.value =
-        ((performance.now() - start) / 1000) * speed;
+        ((now - start) / 1000) * speed;
       program.uniforms.uHueShift.value = hueShift;
       program.uniforms.uNoise.value = noiseIntensity;
       program.uniforms.uScan.value = scanlineIntensity;
@@ -157,10 +166,25 @@ export default function DarkVeil({
       frame = requestAnimationFrame(loop);
     };
 
-    loop();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) {
+          lastFrame = 0;
+          frame = requestAnimationFrame(loop);
+        } else {
+          cancelAnimationFrame(frame);
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
+
+    frame = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(frame);
+      observer.disconnect();
       clearTimeout(resizeTimer);
       window.removeEventListener("resize", debouncedResize);
     };

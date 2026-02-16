@@ -1,143 +1,181 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useInView } from "motion/react";
-import * as echarts from "echarts/core";
-import { RadarChart } from "echarts/charts";
-import { TooltipComponent, LegendComponent } from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
-
-echarts.use([RadarChart, TooltipComponent, LegendComponent, CanvasRenderer]);
+import { useRef } from "react";
+import { motion, useInView } from "motion/react";
 
 const co2Data = [
   { name: "Węgiel", value: 8.2 },
   { name: "Olej opałowy", value: 5.8 },
   { name: "Gaz ziemny", value: 4.5 },
-  { name: "Ogrzewanie elektr.", value: 3.9 },
+  { name: "Ogrzew. elektr.", value: 3.9 },
   { name: "Klimatyzator", value: 2.8 },
   { name: "Pompa ciepła", value: 1.4 },
 ];
 
+const MAX = 10;
+const CX = 150;
+const CY = 140;
+const R = 110;
+const PUMP_VALUE = 1.4;
+const RINGS = 4;
+const N = co2Data.length;
+
+function polarToXY(i: number, value: number) {
+  const angle = (Math.PI * 2 * i) / N - Math.PI / 2;
+  const r = (value / MAX) * R;
+  return { x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) };
+}
+
+function polygonPoints(values: number[]) {
+  return values.map((v, i) => {
+    const p = polarToXY(i, v);
+    return `${p.x},${p.y}`;
+  }).join(" ");
+}
+
 export default function Co2RadarChart() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<echarts.ECharts | null>(null);
-  const inViewRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(inViewRef, { once: true, margin: "-100px" });
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const chart = echarts.init(containerRef.current, undefined, { renderer: "canvas" });
-    chartRef.current = chart;
-
-    const option: echarts.EChartsCoreOption = {
-      backgroundColor: "transparent",
-      tooltip: {
-        backgroundColor: "rgba(0,0,0,0.85)",
-        borderColor: "rgba(255,255,255,0.1)",
-        textStyle: { color: "#fff", fontSize: 12 },
-      },
-      legend: {
-        bottom: 0,
-        textStyle: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
-        itemWidth: 12,
-        itemHeight: 8,
-        itemGap: 20,
-      },
-      radar: {
-        indicator: co2Data.map((d) => ({
-          name: d.name,
-          max: 10,
-        })),
-        shape: "polygon",
-        splitNumber: 4,
-        center: ["50%", "48%"],
-        radius: "60%",
-        axisName: {
-          color: "rgba(255,255,255,0.6)",
-          fontSize: 11,
-        },
-        splitArea: {
-          show: true,
-          areaStyle: {
-            color: [
-              "rgba(255,255,255,0.02)",
-              "rgba(255,255,255,0.04)",
-              "rgba(255,255,255,0.02)",
-              "rgba(255,255,255,0.04)",
-            ],
-          },
-        },
-        splitLine: { lineStyle: { color: "rgba(255,255,255,0.08)" } },
-        axisLine: { lineStyle: { color: "rgba(255,255,255,0.1)" } },
-      },
-      series: [
-        {
-          type: "radar",
-          data: [
-            {
-              value: co2Data.map((d) => d.value),
-              name: "Emisja tradycyjna",
-              lineStyle: { color: "#ef4444", width: 2 },
-              itemStyle: { color: "#ef4444", borderWidth: 0 },
-              areaStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: "rgba(239, 68, 68, 0.25)" },
-                  { offset: 1, color: "rgba(239, 68, 68, 0.05)" },
-                ]),
-              },
-              symbolSize: 6,
-            },
-            {
-              value: co2Data.map(() => 1.4),
-              name: "Pompa ciepła",
-              lineStyle: { color: "#22c55e", width: 2 },
-              itemStyle: { color: "#22c55e", borderWidth: 0 },
-              areaStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: "rgba(34, 197, 94, 0.3)" },
-                  { offset: 1, color: "rgba(34, 197, 94, 0.08)" },
-                ]),
-              },
-              symbolSize: 6,
-            },
-          ],
-          animationDuration: 1500,
-          animationEasing: "cubicOut",
-        },
-      ],
-    };
-
-    chart.setOption(option);
-
-    let resizeTimer = 0;
-    const handleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => chart.resize(), 150);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      clearTimeout(resizeTimer);
-      window.removeEventListener("resize", handleResize);
-      chart.dispose();
-      chartRef.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (inView && chartRef.current) {
-      chartRef.current.resize();
-    }
-  }, [inView]);
+  const dataPoints = polygonPoints(co2Data.map((d) => d.value));
+  const pumpPoints = polygonPoints(co2Data.map(() => PUMP_VALUE));
 
   return (
-    <div ref={inViewRef}>
+    <div ref={ref}>
       <div
-        ref={containerRef}
-        className="w-full h-[350px]"
+        className="w-full flex flex-col items-center"
         style={{ opacity: inView ? 1 : 0, transition: "opacity 0.6s ease-out" }}
-      />
+      >
+        <svg viewBox="0 0 300 300" className="w-full max-w-[350px] h-auto">
+          <defs>
+            <linearGradient id="co2-red" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(239,68,68,0.25)" />
+              <stop offset="100%" stopColor="rgba(239,68,68,0.05)" />
+            </linearGradient>
+            <linearGradient id="co2-green" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(34,197,94,0.3)" />
+              <stop offset="100%" stopColor="rgba(34,197,94,0.08)" />
+            </linearGradient>
+          </defs>
+
+          {/* Grid rings */}
+          {Array.from({ length: RINGS }, (_, ring) => {
+            const val = (MAX / RINGS) * (ring + 1);
+            const pts = polygonPoints(co2Data.map(() => val));
+            return (
+              <polygon
+                key={ring}
+                points={pts}
+                fill={ring % 2 === 0 ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.04)"}
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth={0.5}
+              />
+            );
+          })}
+
+          {/* Axis lines */}
+          {co2Data.map((_, i) => {
+            const p = polarToXY(i, MAX);
+            return (
+              <line
+                key={i}
+                x1={CX}
+                y1={CY}
+                x2={p.x}
+                y2={p.y}
+                stroke="rgba(255,255,255,0.1)"
+                strokeWidth={0.5}
+              />
+            );
+          })}
+
+          {/* Data area — traditional emissions */}
+          <motion.polygon
+            points={inView ? dataPoints : polygonPoints(co2Data.map(() => 0))}
+            fill="url(#co2-red)"
+            stroke="#ef4444"
+            strokeWidth={2}
+            initial={false}
+            animate={{ points: inView ? dataPoints : polygonPoints(co2Data.map(() => 0)) }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          />
+
+          {/* Data area — heat pump */}
+          <motion.polygon
+            points={inView ? pumpPoints : polygonPoints(co2Data.map(() => 0))}
+            fill="url(#co2-green)"
+            stroke="#22c55e"
+            strokeWidth={2}
+            initial={false}
+            animate={{ points: inView ? pumpPoints : polygonPoints(co2Data.map(() => 0)) }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+          />
+
+          {/* Data dots — traditional */}
+          {co2Data.map((d, i) => {
+            const p = polarToXY(i, d.value);
+            return (
+              <motion.circle
+                key={`red-${i}`}
+                cx={p.x}
+                cy={p.y}
+                r={3}
+                fill="#ef4444"
+                initial={{ opacity: 0 }}
+                animate={inView ? { opacity: 1 } : {}}
+                transition={{ delay: 1 + i * 0.05 }}
+              />
+            );
+          })}
+
+          {/* Data dots — pump */}
+          {co2Data.map((_, i) => {
+            const p = polarToXY(i, PUMP_VALUE);
+            return (
+              <motion.circle
+                key={`green-${i}`}
+                cx={p.x}
+                cy={p.y}
+                r={3}
+                fill="#22c55e"
+                initial={{ opacity: 0 }}
+                animate={inView ? { opacity: 1 } : {}}
+                transition={{ delay: 1.3 + i * 0.05 }}
+              />
+            );
+          })}
+
+          {/* Axis labels */}
+          {co2Data.map((d, i) => {
+            const p = polarToXY(i, MAX + 1.5);
+            return (
+              <text
+                key={`label-${i}`}
+                x={p.x}
+                y={p.y}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill="rgba(255,255,255,0.6)"
+                fontSize={9}
+              >
+                {d.name}
+              </text>
+            );
+          })}
+        </svg>
+
+        {/* Legend */}
+        <div className="flex items-center gap-6 mt-2">
+          <div className="flex items-center gap-2">
+            <span className="block w-3 h-2 rounded-sm bg-red-500" />
+            <span className="text-white/50 text-xs">Emisja tradycyjna</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="block w-3 h-2 rounded-sm bg-green-500" />
+            <span className="text-white/50 text-xs">Pompa ciepła</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
