@@ -28,6 +28,25 @@ export const metadata: Metadata = {
     icon: "/images/pbac-logo.png",
     apple: "/images/pbac-logo.png",
   },
+  openGraph: {
+    siteName: "PBAC",
+    locale: "pl_PL",
+    type: "website",
+    images: [
+      {
+        url: "/images/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "PBAC — Pompy Ciepła Warszawa",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pompy Ciepła — Montaż i Serwis | PBAC Warszawa",
+    description:
+      "Profesjonalny montaż pomp ciepła w Warszawie. Samsung, Mitsubishi Heavy, Fujitsu, Neoheat. Wycena gratis.",
+  },
 };
 
 export default function RootLayout({

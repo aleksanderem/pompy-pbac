@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     url: "https://pompy.pbac.pl",
     images: [
       {
-        url: "https://pompy.pbac.pl/images/pbac-logo.png",
-        width: 184,
-        height: 150,
+        url: "https://pompy.pbac.pl/images/og-default.png",
+        width: 1200,
+        height: 630,
         alt: "PBAC — Pompy Ciepła Warszawa",
       },
     ],
