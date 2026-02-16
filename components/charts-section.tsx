@@ -68,7 +68,7 @@ export default function ChartsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="font-montserrat text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="font-montserrat text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
             <AuroraText>Pompa ciepła</AuroraText> w liczbach
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto text-lg">

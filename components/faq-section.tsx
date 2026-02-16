@@ -52,7 +52,7 @@ export default function FaqSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="font-montserrat text-4xl md:text-5xl font-bold text-center mb-16"
+          className="font-montserrat text-2xl sm:text-4xl md:text-5xl font-bold text-center mb-16"
         >
           Najczęściej zadawane pytania
         </motion.h2>

@@ -37,6 +37,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl" className="dark">
+      <head>
+        <link rel="preconnect" href="https://ezicons.com" />
+        <link rel="dns-prefetch" href="https://ezicons.com" />
+      </head>
       <body
         className={`${montserrat.variable} ${chivo.variable} font-chivo bg-black text-white antialiased`}
       >

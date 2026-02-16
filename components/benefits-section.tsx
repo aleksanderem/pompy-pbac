@@ -48,7 +48,7 @@ export default function BenefitsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="font-montserrat text-4xl md:text-5xl font-bold text-center mb-16"
+          className="font-montserrat text-2xl sm:text-4xl md:text-5xl font-bold text-center mb-16"
         >
           Dlaczego <AuroraText>pompa ciepła</AuroraText>?
         </motion.h2>

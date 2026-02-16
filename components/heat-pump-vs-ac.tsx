@@ -75,7 +75,7 @@ export default function HeatPumpVsAc() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="font-montserrat text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="font-montserrat text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
             <AuroraText>Pompa ciepła</AuroraText> vs Klimatyzator
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto text-lg">
@@ -85,10 +85,10 @@ export default function HeatPumpVsAc() {
           </p>
         </motion.div>
 
-        {/* Comparison table */}
+        {/* Comparison table — desktop: 3 columns, mobile: stacked cards */}
         <div className="space-y-3">
-          {/* Header */}
-          <div className="grid grid-cols-[1fr_1fr_1fr] gap-3 px-4 text-sm">
+          {/* Header — desktop only */}
+          <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr] gap-3 px-4 text-sm">
             <div />
             <div className="text-center">
               <span className="gradient-button text-white text-xs uppercase tracking-wider px-4 py-1.5 rounded-full inline-block">
@@ -102,7 +102,7 @@ export default function HeatPumpVsAc() {
             </div>
           </div>
 
-          {/* Rows */}
+          {/* Rows — desktop: 3 columns */}
           {comparisons.map((row, i) => (
             <motion.div
               key={row.feature}
@@ -110,24 +110,51 @@ export default function HeatPumpVsAc() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="grid grid-cols-[1fr_1fr_1fr] gap-3 bg-white/5 border border-white/10 rounded-xl p-4 items-start"
+              className="bg-white/5 border border-white/10 rounded-xl p-4"
             >
-              <div>
+              {/* Desktop layout */}
+              <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr] gap-3 items-start">
+                <div>
+                  <p className="font-montserrat font-bold text-white text-sm">
+                    {row.feature}
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <StatusIcon value={row.heatPump.value} />
+                  <p className="text-white/60 text-xs leading-relaxed">
+                    {row.heatPump.note}
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <StatusIcon value={row.ac.value} />
+                  <p className="text-white/60 text-xs leading-relaxed">
+                    {row.ac.note}
+                  </p>
+                </div>
+              </div>
+              {/* Mobile layout — stacked */}
+              <div className="sm:hidden space-y-3">
                 <p className="font-montserrat font-bold text-white text-sm">
                   {row.feature}
                 </p>
-              </div>
-              <div className="flex items-start gap-2">
-                <StatusIcon value={row.heatPump.value} />
-                <p className="text-white/60 text-xs leading-relaxed">
-                  {row.heatPump.note}
-                </p>
-              </div>
-              <div className="flex items-start gap-2">
-                <StatusIcon value={row.ac.value} />
-                <p className="text-white/60 text-xs leading-relaxed">
-                  {row.ac.note}
-                </p>
+                <div className="flex items-start gap-2">
+                  <StatusIcon value={row.heatPump.value} />
+                  <div>
+                    <p className="text-white/50 text-xs uppercase tracking-wider mb-0.5">Pompa ciepła</p>
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      {row.heatPump.note}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <StatusIcon value={row.ac.value} />
+                  <div>
+                    <p className="text-white/50 text-xs uppercase tracking-wider mb-0.5">Klimatyzator</p>
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      {row.ac.note}
+                    </p>
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}

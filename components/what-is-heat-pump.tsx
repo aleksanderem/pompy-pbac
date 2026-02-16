@@ -55,7 +55,7 @@ export default function WhatIsHeatPump() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="font-montserrat text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="font-montserrat text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
             Co to jest <AuroraText>pompa ciepła</AuroraText>?
           </h2>
           <p className="text-white/60 max-w-3xl mx-auto text-lg">
@@ -73,7 +73,7 @@ export default function WhatIsHeatPump() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
           >
             {steps.map((step, i) => (
               <div key={step.label} className="relative rounded-2xl border border-white/10 p-2">

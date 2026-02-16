@@ -42,7 +42,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="font-montserrat text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+          className="font-montserrat text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
         >
           <AuroraText className="font-montserrat">Kup spokój na dekady</AuroraText>
           <br />
@@ -53,7 +53,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
+          className="mt-6 text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
         >
           Oszczędź do 70% kosztów ogrzewania. Profesjonalny montaż pomp ciepła
           Samsung, Mitsubishi Heavy, Fujitsu i Neoheat z ekologicznym czynnikiem
@@ -85,7 +85,7 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-16 flex flex-wrap justify-center gap-8 text-white/50 text-sm"
+          className="mt-10 sm:mt-16 grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-6 sm:gap-8 text-white/50 text-sm"
         >
           <div className="text-center">
             <p className="font-montserrat text-2xl font-bold text-white">4</p>

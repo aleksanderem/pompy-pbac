@@ -225,7 +225,7 @@ export default function QuoteForm() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-montserrat font-bold text-white text-center mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-montserrat font-bold text-white text-center mb-4">
             Zamów <AuroraText>darmową wycenę</AuroraText>
           </h2>
           <p className="text-white/60 text-center mb-10 max-w-lg mx-auto">
